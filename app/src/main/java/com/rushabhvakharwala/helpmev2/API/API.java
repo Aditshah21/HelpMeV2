@@ -13,8 +13,11 @@ import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Url;
+
+import java.util.*;
 
 public interface API {
     @FormUrlEncoded
@@ -32,9 +35,17 @@ public interface API {
     );
 
 
-    
+
     @POST("places/nearby_places/fetch")
     Call<PlacesResponse> nearbyPlacesList(
             @Body PlacesRequest places_request
     );
+
+
+    @POST("places/nearby_places/fetch")
+    @Headers({"Content-Type: application/json"})
+    Call<HashMap<String, ArrayList<HashMap<String, String>>>> nearby_places(
+            @Body HashMap<String, HashMap<String, HashMap<String, String>>> body
+    );
+
 }
