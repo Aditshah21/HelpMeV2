@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,27 +23,21 @@ import android.widget.Toast;
 
 import com.rushabhvakharwala.helpmev2.API.RetrofitClient;
 import com.rushabhvakharwala.helpmev2.Adapters.NearbyPlacesAdapter;
-import com.rushabhvakharwala.helpmev2.Models.PostLoginModels.Location.CurrentLocation;
-import com.rushabhvakharwala.helpmev2.Models.PostLoginModels.Location.Place;
-import com.rushabhvakharwala.helpmev2.Models.PostLoginModels.Location.UserLocation;
+import com.rushabhvakharwala.helpmev2.Models.PostLoginModels.Location._NearbyPlace;
+import com.rushabhvakharwala.helpmev2.Models.PostLoginModels.Location._UserLocationAttributes;
 import com.rushabhvakharwala.helpmev2.Models.PostLoginModels.NearbyPlaces;
 import com.rushabhvakharwala.helpmev2.Models.PostLoginModels.PlacesRequest;
 import com.rushabhvakharwala.helpmev2.Models.PostLoginModels.PlacesResponse;
 import com.rushabhvakharwala.helpmev2.R;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NearbyPlacesActivity extends AppCompatActivity {
 
@@ -52,7 +47,7 @@ public class NearbyPlacesActivity extends AppCompatActivity {
     NearbyPlacesAdapter placesAdapter;
     private String access_token;
 
-    List<NearbyPlaces> placesList;
+    ArrayList<NearbyPlaces> placesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +66,7 @@ public class NearbyPlacesActivity extends AppCompatActivity {
 
         findNearbyPlaces();
 
-        placesAdapter = new NearbyPlacesAdapter(this, placesList);
-        recyclerView.setAdapter(placesAdapter);
+
 
 
     }
@@ -139,58 +133,111 @@ public class NearbyPlacesActivity extends AppCompatActivity {
             return;
         }
         Location loc = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        PlacesRequest placesRequest = new PlacesRequest(new CurrentLocation(new Place(new UserLocation(loc.getLatitude(),loc.getLongitude()))));
+        PlacesRequest placesRequest = new PlacesRequest(new _NearbyPlace(new _UserLocationAttributes(loc.getLatitude(),loc.getLongitude())));
 
+        String latitude = String.valueOf(loc.getLatitude());
+        String longitude = String.valueOf(loc.getLongitude());
 
+        Toast.makeText(NearbyPlacesActivity.this, latitude + " " + longitude , Toast.LENGTH_LONG).show();
 
-//        OkHttpClient client = new OkHttpClient();
+//        Classic retro
+//        Call<PlacesResponse> call = RetrofitClient
+//                .getInstance()
+//                .getApi()
+//                .nearbyPlacesList(placesRequest);
 //
-//        MediaType mediaType = MediaType.parse("application/json");
-//        RequestBody body = RequestBody.create(mediaType, "{\"nearby_place\":" +
-//                "{\"user_location_attributes\":" +
-//                    "{\"lat\":\""+loc.getLatitude()+"\"," +
-//                    "\"lng\":\""+loc.getLongitude()+"\"" +
-//                "}" +
-//                "}" +
-//                "}");
-//        Request request = new Request.Builder()
-//                .url("https://helpme-dev.herokuapp.com/places/nearby_places/fetch")
-//                .post(body)
-//                .addHeader("content-type", "application/json")
-//                .addHeader("authorization", "Bearer "+access_token)
-//                .addHeader("cache-control", "no-cache")
+//        //ArrayList<NearbyPlaces> np = new ArrayList<NearbyPlaces>();
 //
-//                .build();
+//        call.enqueue(new Callback<PlacesResponse>() {
+//            @Override
+//            public void onResponse(Call<PlacesResponse> call, Response<PlacesResponse> response) {
 //
-//        try {
-//            okhttp3.Response response = client.newCall(request).execute();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+//                //PlacesResponse placesResponse = response.body();
+//
+//                Log.d("My App", response.body().toString());
+//
+//                ArrayList<NearbyPlaces> np;
+//                np = new ArrayList<>(response.body().getNearby_places());
+//                np.get(0);
+//                for(int i=0 ; i<np.size() ;i++){
+//                    Log.d("MyApp", np.get(i).getName());
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<PlacesResponse> call, Throwable t) {
+//
+//                Log.d("Error",t.getMessage());
+//
+//            }
+//        });
 
 
-        Call<PlacesResponse> call = RetrofitClient
+//shitshow
+//        Call<ArrayList<NearbyPlaces>> call = RetrofitClient
+//                .getInstance()
+//                .getApi()
+//                .nearbyPlacesList(placesRequest);
+//
+//        call.enqueue(new Callback<ArrayList<NearbyPlaces>>() {
+//            @Override
+//            public void onResponse(Call<ArrayList<NearbyPlaces>> call, Response<ArrayList<NearbyPlaces>> response) {
+//                ArrayList<NearbyPlaces> nearbyPlaces = response.body();
+//                Log.d("MyApp", String.valueOf(nearbyPlaces.size()));
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ArrayList<NearbyPlaces>> call, Throwable t) {
+//
+//            }
+//        });
+
+        //Ittsel hashmap
+        HashMap<String, HashMap<String, HashMap<String, String>>> hash = new HashMap<String, HashMap<String, HashMap<String, String>>>();
+        hash.put("nearby_place", new HashMap<String, HashMap<String, String>>() );
+        hash.get("nearby_place").put("user_location_attributes", new HashMap<String, String>());
+        hash.get("nearby_place").get("user_location_attributes").put("lat",latitude); // add gps location here
+        hash.get("nearby_place").get("user_location_attributes").put("lng",longitude); // add gps location here
+
+        Log.d("Location", latitude + " " + longitude );
+
+        Call<HashMap<String, List<HashMap<String, String>>>> call = RetrofitClient
                 .getInstance()
-                .getApi()
-                .nearbyPlacesList(placesRequest);
+                .getGoogleGsonApi()
+                .nearby_places(hash);
 
-        call.enqueue(new Callback<PlacesResponse>() {
+        final ArrayList<NearbyPlaces> nearbyPlaces = new ArrayList<NearbyPlaces>();
+
+        call.enqueue(new Callback<HashMap<String, List<HashMap<String, String>>>>() {
             @Override
-            public void onResponse(Call<PlacesResponse> call, Response<PlacesResponse> response) {
+            public void onResponse(Call<HashMap<String, List<HashMap<String, String>>>> call, Response<HashMap<String, List<HashMap<String, String>>>> response) {
+                Log.d("MyApp", String.valueOf(response.body().get("nearby_places").size()));
 
-                PlacesResponse pr = response.body();
-                placesList = pr.getNearby_places();
-                if(response.code()==200)
-                    Toast.makeText(NearbyPlacesActivity.this, "Browse the heck away", Toast.LENGTH_LONG).show();
-                else
-                    Toast.makeText(NearbyPlacesActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
+                for (int i = 0; i < response.body().size(); i++){
+                    String name = response.body().get("nearby_places").get(i).get("name");
+                    String vicinity = response.body().get("nearby_places").get(i).get("vicinity");
+                    String icon = response.body().get("nearby_places").get(i).get("icon");
+                    String status = response.body().get("nearby_places").get(i).get("status");
+                    String rating = response.body().get("nearby_places").get(i).get("rating");
+
+                    nearbyPlaces.add(new NearbyPlaces(name,vicinity,icon,status,rating));
+
+                }
+
+                placesList = nearbyPlaces;
+                placesAdapter = new NearbyPlacesAdapter(NearbyPlacesActivity.this, placesList);
+                recyclerView.setAdapter(placesAdapter);
+
             }
 
             @Override
-            public void onFailure(Call<PlacesResponse> call, Throwable t) {
+            public void onFailure(Call<HashMap<String, List<HashMap<String, String>>>> call, Throwable t) {
 
             }
         });
+
+
 
     }
 

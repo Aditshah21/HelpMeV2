@@ -1,10 +1,11 @@
 package com.rushabhvakharwala.helpmev2.Models.PostLoginModels.Location;
 
-public class UserLocation {
+public class _UserLocationAttributes {
+
     double lat;
     double lng;
 
-    public UserLocation(double lat, double lng) {
+    public _UserLocationAttributes(double lat, double lng) {
         this.lat = lat;
         this.lng = lng;
     }
