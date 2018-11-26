@@ -188,7 +188,7 @@ public class NearbyPlacesActivity extends AppCompatActivity {
             public void onResponse(Call<HashMap<String, List<HashMap<String, String>>>> call, Response<HashMap<String, List<HashMap<String, String>>>> response) {
                 Log.d("MyApp", String.valueOf(response.body().get("nearby_places").size()));
 
-                for (int i = 0; i < response.body().size(); i++){
+                for (int i = 0; i < response.body().get("nearby_places").size(); i++){
                     String name = response.body().get("nearby_places").get(i).get("name");
                     String vicinity = response.body().get("nearby_places").get(i).get("vicinity");
                     String icon = response.body().get("nearby_places").get(i).get("icon");
