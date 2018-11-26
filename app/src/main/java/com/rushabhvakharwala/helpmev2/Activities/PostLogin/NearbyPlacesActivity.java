@@ -194,8 +194,9 @@ public class NearbyPlacesActivity extends AppCompatActivity {
                     String icon = response.body().get("nearby_places").get(i).get("icon");
                     String status = response.body().get("nearby_places").get(i).get("status");
                     String rating = response.body().get("nearby_places").get(i).get("rating");
+                    String photo = response.body().get("nearby_places").get(i).get("photo");
 
-                    nearbyPlaces.add(new NearbyPlaces(name,vicinity,icon,status,rating));
+                    nearbyPlaces.add(new NearbyPlaces(name,vicinity,icon,status,photo,rating));
 
                 }
 
