@@ -41,6 +41,7 @@ import retrofit2.Response;
 
 public class NearbyPlacesActivity extends AppCompatActivity {
 
+    private static final int REQUEST_LOCATION = 1;
     private ActionBar actionBar;
     private Toolbar toolbar;
     RecyclerView recyclerView;
@@ -123,114 +124,51 @@ public class NearbyPlacesActivity extends AppCompatActivity {
 
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
             return;
+        }else {
+
+
+            Location loc1 = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            Location loc2 = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            Location loc3 = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+
+
+            if(loc1 !=null) {
+                String latitude = String.valueOf(loc1.getLatitude());
+                String longitude = String.valueOf(loc1.getLongitude());
+
+                Toast.makeText(NearbyPlacesActivity.this, latitude + " " + longitude, Toast.LENGTH_LONG).show();
+                LocAndPrint(latitude,longitude);
+            }
+            if(loc2 !=null) {
+                String latitude = String.valueOf(loc2.getLatitude());
+                String longitude = String.valueOf(loc2.getLongitude());
+
+                Toast.makeText(NearbyPlacesActivity.this, latitude + " " + longitude, Toast.LENGTH_LONG).show();
+                LocAndPrint(latitude,longitude);
+            }
+            if(loc3 !=null) {
+                String latitude = String.valueOf(loc3.getLatitude());
+                String longitude = String.valueOf(loc3.getLongitude());
+
+                Toast.makeText(NearbyPlacesActivity.this, latitude + " " + longitude, Toast.LENGTH_LONG).show();
+                LocAndPrint(latitude,longitude);
+            }else {
+                Toast.makeText(NearbyPlacesActivity.this, "Unable to locate you", Toast.LENGTH_LONG).show();
+            }
+
+
         }
-        Location loc = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        PlacesRequest placesRequest = new PlacesRequest(new _NearbyPlace(new _UserLocationAttributes(loc.getLatitude(),loc.getLongitude())));
-
-        String latitude = String.valueOf(loc.getLatitude());
-        String longitude = String.valueOf(loc.getLongitude());
-
-        Toast.makeText(NearbyPlacesActivity.this, latitude + " " + longitude , Toast.LENGTH_LONG).show();
-         //code sample - place it where you like
-//        HashMap<String, HashMap<String, HashMap<String, String>>> hash = new HashMap<String, HashMap<String, HashMap<String, String>>>();
-//        hash.put("nearby_place", new HashMap<String, HashMap<String, String>>() );
-//        hash.get("nearby_place").put("user_location_attributes", new HashMap<String, String>());
-//        hash.get("nearby_place").get("user_location_attributes").put("lat","42.3072567"); // add gps location here
-//        hash.get("nearby_place").get("user_location_attributes").put("lng","-83.0560483"); // add gps location here
-
-//        Call<HashMap<String, ArrayList<HashMap<String, String>>>> call2 =  RetrofitClient
-//                .getInstance()
-//                .getApi()
-//                .nearby_places(hash);
-//
-//
-//
-//        call2.enqueue(new Callback<HashMap<String, ArrayList<HashMap<String, String>>>>() {
-//            @Override
-//            public void onResponse(Call<HashMap<String, ArrayList<HashMap<String, String>>>> call2, Response<HashMap<String, ArrayList<HashMap<String, String>>>> response) {
-//                Log.d("MyApp",response.body().get("nearby_places").get(0).get("name"));
-//                Log.d("MyApp",response.body().get("nearby_places").get(0).get("vicinity"));
-//                Log.d("MyApp",response.body().get("nearby_places").get(0).get("icon"));
-//                Log.d("MyApp",response.body().get("nearby_places").get(0).get("status"));
-//                Log.d("MyApp",response.body().get("nearby_places").get(0).get("rating"));
-//            }
-//
-//
-//
-//            @Override
-//            public void onFailure(Call<HashMap<String, ArrayList<HashMap<String, String>>>> call2, Throwable t) {
-//
-//                Toast.makeText(NearbyPlacesActivity.this, t.getMessage() , Toast.LENGTH_LONG).show();
-//
-//            }
-//        });
-
-        // end of code
-//>>>>>>> 8907e7a7f3e3e6c5c424cc3be72c151c0479ef91
-
-//        Classic retro
-//        Call<PlacesResponse> call = RetrofitClient
-//                .getInstance()
-//                .getApi()
-//                .nearbyPlacesList(placesRequest);
-//
-//        //ArrayList<NearbyPlaces> np = new ArrayList<NearbyPlaces>();
-//
-//        call.enqueue(new Callback<PlacesResponse>() {
-//            @Override
-//            public void onResponse(Call<PlacesResponse> call, Response<PlacesResponse> response) {
-//
-//                //PlacesResponse placesResponse = response.body();
-//
-//                Log.d("My App", response.body().toString());
-//
-//                ArrayList<NearbyPlaces> np;
-//                np = new ArrayList<>(response.body().getNearby_places());
-//                np.get(0);
-//                for(int i=0 ; i<np.size() ;i++){
-//                    Log.d("MyApp", np.get(i).getName());
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<PlacesResponse> call, Throwable t) {
-//
-//                Log.d("Error",t.getMessage());
-//
-//            }
-//        });
 
 
-//shitshow
-//        Call<ArrayList<NearbyPlaces>> call = RetrofitClient
-//                .getInstance()
-//                .getApi()
-//                .nearbyPlacesList(placesRequest);
-//
-//        call.enqueue(new Callback<ArrayList<NearbyPlaces>>() {
-//            @Override
-//            public void onResponse(Call<ArrayList<NearbyPlaces>> call, Response<ArrayList<NearbyPlaces>> response) {
-//                ArrayList<NearbyPlaces> nearbyPlaces = response.body();
-//                Log.d("MyApp", String.valueOf(nearbyPlaces.size()));
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ArrayList<NearbyPlaces>> call, Throwable t) {
-//
-//            }
-//        });
+    }
+
+    private void LocAndPrint(String latitude,String longitude){
 
         //Ittsel hashmap
-        HashMap<String, HashMap<String, HashMap<String, String>>> hash = new HashMap<String, HashMap<String, HashMap<String, String>>>();
+        HashMap<String, HashMap<String, HashMap<String, String>>> hash = new HashMap<>();
         hash.put("nearby_place", new HashMap<String, HashMap<String, String>>() );
         hash.get("nearby_place").put("user_location_attributes", new HashMap<String, String>());
         hash.get("nearby_place").get("user_location_attributes").put("lat",latitude); // add gps location here
@@ -243,7 +181,7 @@ public class NearbyPlacesActivity extends AppCompatActivity {
                 .getGoogleGsonApi()
                 .nearby_places(hash);
 
-        final ArrayList<NearbyPlaces> nearbyPlaces = new ArrayList<NearbyPlaces>();
+        final ArrayList<NearbyPlaces> nearbyPlaces = new ArrayList<>();
 
         call.enqueue(new Callback<HashMap<String, List<HashMap<String, String>>>>() {
             @Override
@@ -272,7 +210,6 @@ public class NearbyPlacesActivity extends AppCompatActivity {
 
             }
         });
-
 
 
     }
