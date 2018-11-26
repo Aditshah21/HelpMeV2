@@ -32,10 +32,7 @@ import com.rushabhvakharwala.helpmev2.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-<<<<<<< HEAD
 import java.util.LinkedList;
-=======
->>>>>>> 8907e7a7f3e3e6c5c424cc3be72c151c0479ef91
 import java.util.List;
 
 import retrofit2.Call;
@@ -138,48 +135,46 @@ public class NearbyPlacesActivity extends AppCompatActivity {
         Location loc = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         PlacesRequest placesRequest = new PlacesRequest(new _NearbyPlace(new _UserLocationAttributes(loc.getLatitude(),loc.getLongitude())));
 
-<<<<<<< HEAD
         String latitude = String.valueOf(loc.getLatitude());
         String longitude = String.valueOf(loc.getLongitude());
 
         Toast.makeText(NearbyPlacesActivity.this, latitude + " " + longitude , Toast.LENGTH_LONG).show();
-=======
-        // code sample - place it where you like
-        HashMap<String, HashMap<String, HashMap<String, String>>> hash = new HashMap<String, HashMap<String, HashMap<String, String>>>();
-        hash.put("nearby_place", new HashMap<String, HashMap<String, String>>() );
-        hash.get("nearby_place").put("user_location_attributes", new HashMap<String, String>());
-        hash.get("nearby_place").get("user_location_attributes").put("lat","42.3072567"); // add gps location here
-        hash.get("nearby_place").get("user_location_attributes").put("lng","-83.0560483"); // add gps location here
+         //code sample - place it where you like
+//        HashMap<String, HashMap<String, HashMap<String, String>>> hash = new HashMap<String, HashMap<String, HashMap<String, String>>>();
+//        hash.put("nearby_place", new HashMap<String, HashMap<String, String>>() );
+//        hash.get("nearby_place").put("user_location_attributes", new HashMap<String, String>());
+//        hash.get("nearby_place").get("user_location_attributes").put("lat","42.3072567"); // add gps location here
+//        hash.get("nearby_place").get("user_location_attributes").put("lng","-83.0560483"); // add gps location here
 
-        Call<HashMap<String, ArrayList<HashMap<String, String>>>> call2 =  RetrofitClient
-                .getInstance()
-                .getApi()
-                .nearby_places(hash);
-
-
-
-        call2.enqueue(new Callback<HashMap<String, ArrayList<HashMap<String, String>>>>() {
-            @Override
-            public void onResponse(Call<HashMap<String, ArrayList<HashMap<String, String>>>> call2, Response<HashMap<String, ArrayList<HashMap<String, String>>>> response) {
-                Log.d("MyApp",response.body().get("nearby_places").get(0).get("name"));
-                Log.d("MyApp",response.body().get("nearby_places").get(0).get("vicinity"));
-                Log.d("MyApp",response.body().get("nearby_places").get(0).get("icon"));
-                Log.d("MyApp",response.body().get("nearby_places").get(0).get("status"));
-                Log.d("MyApp",response.body().get("nearby_places").get(0).get("rating"));
-            }
-
-
-
-            @Override
-            public void onFailure(Call<HashMap<String, ArrayList<HashMap<String, String>>>> call2, Throwable t) {
-
-                Toast.makeText(NearbyPlacesActivity.this, t.getMessage() , Toast.LENGTH_LONG).show();
-
-            }
-        });
+//        Call<HashMap<String, ArrayList<HashMap<String, String>>>> call2 =  RetrofitClient
+//                .getInstance()
+//                .getApi()
+//                .nearby_places(hash);
+//
+//
+//
+//        call2.enqueue(new Callback<HashMap<String, ArrayList<HashMap<String, String>>>>() {
+//            @Override
+//            public void onResponse(Call<HashMap<String, ArrayList<HashMap<String, String>>>> call2, Response<HashMap<String, ArrayList<HashMap<String, String>>>> response) {
+//                Log.d("MyApp",response.body().get("nearby_places").get(0).get("name"));
+//                Log.d("MyApp",response.body().get("nearby_places").get(0).get("vicinity"));
+//                Log.d("MyApp",response.body().get("nearby_places").get(0).get("icon"));
+//                Log.d("MyApp",response.body().get("nearby_places").get(0).get("status"));
+//                Log.d("MyApp",response.body().get("nearby_places").get(0).get("rating"));
+//            }
+//
+//
+//
+//            @Override
+//            public void onFailure(Call<HashMap<String, ArrayList<HashMap<String, String>>>> call2, Throwable t) {
+//
+//                Toast.makeText(NearbyPlacesActivity.this, t.getMessage() , Toast.LENGTH_LONG).show();
+//
+//            }
+//        });
 
         // end of code
->>>>>>> 8907e7a7f3e3e6c5c424cc3be72c151c0479ef91
+//>>>>>>> 8907e7a7f3e3e6c5c424cc3be72c151c0479ef91
 
 //        Classic retro
 //        Call<PlacesResponse> call = RetrofitClient

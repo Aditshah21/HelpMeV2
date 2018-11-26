@@ -40,7 +40,6 @@ public interface API {
 
 
 
-<<<<<<< HEAD
 //    @POST("places/nearby_places/fetch")
 //    Call<PlacesResponse> nearbyPlacesList(
 //            @Body PlacesRequest places_request
@@ -51,8 +50,6 @@ public interface API {
 //      @Body PlacesRequest placesRequest
 //    );
 
-=======
->>>>>>> 8907e7a7f3e3e6c5c424cc3be72c151c0479ef91
     @POST("places/nearby_places/fetch")
     @Headers({"Content-Type: application/json"})
     Call<HashMap<String, List<HashMap<String, String>>>> nearby_places(
@@ -60,10 +57,6 @@ public interface API {
     );
 
 
-    @POST("places/nearby_places/fetch")
-    @Headers({"Content-Type: application/json"})
-    Call<HashMap<String, ArrayList<HashMap<String, String>>>> nearby_places(
-            @Body HashMap<String, HashMap<String, HashMap<String, String>>> body
-    );
+
 
 }
