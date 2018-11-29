@@ -4,7 +4,10 @@
     <group
         android:id="@+id/grp_1"
         android:checkableBehavior="single">
-
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home"
+            android:title="Home" />
         <item
             android:id="@+id/nearby_places"
             android:icon="@drawable/ic_location"
@@ -19,10 +22,6 @@
             android:id="@+id/redeem_coupon"
             android:icon="@drawable/ic_shopping_cart"
             android:title="Redeem Coupon" />
-        <item
-            android:id="@+id/store_profile"
-            android:icon="@drawable/ic_person"
-            android:title="Store Profile"/>
 
     </group>
     <group

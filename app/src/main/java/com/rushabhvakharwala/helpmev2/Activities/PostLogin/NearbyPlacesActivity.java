@@ -1,7 +1,9 @@
 package com.rushabhvakharwala.helpmev2.Activities.PostLogin;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -12,6 +14,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -19,9 +23,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rushabhvakharwala.helpmev2.API.RetrofitClient;
+import com.rushabhvakharwala.helpmev2.Activities.MainActivity;
 import com.rushabhvakharwala.helpmev2.Adapters.NearbyPlacesAdapter;
 import com.rushabhvakharwala.helpmev2.Models.PostLoginModels.Location._NearbyPlace;
 import com.rushabhvakharwala.helpmev2.Models.PostLoginModels.Location._UserLocationAttributes;
@@ -39,7 +49,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class NearbyPlacesActivity extends AppCompatActivity {
+public class NearbyPlacesActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int REQUEST_LOCATION = 1;
     private ActionBar actionBar;
@@ -47,6 +57,10 @@ public class NearbyPlacesActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     NearbyPlacesAdapter placesAdapter;
     private String access_token;
+    private String email;
+    private List<String> items = new ArrayList<>();
+    private ArrayAdapter adapter;
+    private TextView txt_no_item;
 
     ArrayList<NearbyPlaces> placesList;
 
@@ -57,7 +71,8 @@ public class NearbyPlacesActivity extends AppCompatActivity {
         initToolbar();
         initNavigationMenu();
 
-        access_token = getIntent().getExtras().getString("access_token");
+        //access_token = getIntent().getExtras().getString("access_token");
+//        email = getIntent().getExtras().getString("email");
 
         placesList = new ArrayList<>();
         recyclerView = findViewById(R.id.recycler_view);
@@ -67,7 +82,10 @@ public class NearbyPlacesActivity extends AppCompatActivity {
 
         findNearbyPlaces();
 
+        //findViewById(R.id.postbutton).setOnClickListener(this);
+        //showCustomDialog();
 
+        //findViewById(R.id.postbutton).setOnClickListener(this);
 
 
     }
@@ -111,8 +129,42 @@ public class NearbyPlacesActivity extends AppCompatActivity {
         nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(final MenuItem item) {
+                Intent intent;
                 Toast.makeText(getApplicationContext(), item.getTitle() + " Selected", Toast.LENGTH_SHORT).show();
-                actionBar.setTitle(item.getTitle());
+
+                switch (item.getItemId()){
+
+
+                    case R.id.nearby_places:
+                        drawer.closeDrawers();
+                        return true;
+
+                    case R.id.redeem_coupon:
+                        intent = new Intent(NearbyPlacesActivity.this, RedeemCoupon.class);
+                        startActivity(intent);
+                        return true;
+
+                    case R.id.nav_latest:
+                        intent = new Intent(NearbyPlacesActivity.this, FeedActivity.class);
+                        startActivity(intent);
+                        return true;
+
+                    case R.id.store_profile:
+                        intent = new Intent(NearbyPlacesActivity.this, StoreProfileActivity.class);
+                        startActivity(intent);
+                        return true;
+
+                    case R.id.nav_setting:
+                        Toast.makeText(NearbyPlacesActivity.this, "Settings Selected",Toast.LENGTH_LONG).show();
+                        return true;
+
+                    case R.id.nav_logout:
+                        intent = new Intent(NearbyPlacesActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                        return true;
+                }
+                //actionBar.setTitle(item.getTitle());
                 drawer.closeDrawers();
                 return true;
             }
@@ -139,21 +191,21 @@ public class NearbyPlacesActivity extends AppCompatActivity {
                 String latitude = String.valueOf(loc1.getLatitude());
                 String longitude = String.valueOf(loc1.getLongitude());
 
-                Toast.makeText(NearbyPlacesActivity.this, latitude + " " + longitude, Toast.LENGTH_LONG).show();
+                //Toast.makeText(NearbyPlacesActivity.this, latitude + " " + longitude, Toast.LENGTH_LONG).show();
                 LocAndPrint(latitude,longitude);
             }
             if(loc2 !=null) {
                 String latitude = String.valueOf(loc2.getLatitude());
                 String longitude = String.valueOf(loc2.getLongitude());
 
-                Toast.makeText(NearbyPlacesActivity.this, latitude + " " + longitude, Toast.LENGTH_LONG).show();
+                //Toast.makeText(NearbyPlacesActivity.this, latitude + " " + longitude, Toast.LENGTH_LONG).show();
                 LocAndPrint(latitude,longitude);
             }
             if(loc3 !=null) {
                 String latitude = String.valueOf(loc3.getLatitude());
                 String longitude = String.valueOf(loc3.getLongitude());
 
-                Toast.makeText(NearbyPlacesActivity.this, latitude + " " + longitude, Toast.LENGTH_LONG).show();
+                //Toast.makeText(NearbyPlacesActivity.this, latitude + " " + longitude, Toast.LENGTH_LONG).show();
                 LocAndPrint(latitude,longitude);
             }else {
                 Toast.makeText(NearbyPlacesActivity.this, "Unable to locate you", Toast.LENGTH_LONG).show();
@@ -215,4 +267,57 @@ public class NearbyPlacesActivity extends AppCompatActivity {
 
     }
 
+
+
+    private void showCustomDialog() {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
+        dialog.setContentView(R.layout.dialog_add_review);
+        dialog.setCancelable(true);
+
+
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+        final TextView tw = findViewById(R.id.postemail);
+        //tw.setText((String)email);
+        final EditText et_post = (EditText) dialog.findViewById(R.id.et_post);
+        final AppCompatRatingBar rating_bar = (AppCompatRatingBar) dialog.findViewById(R.id.rating_bar);
+        ((AppCompatButton) dialog.findViewById(R.id.bt_cancel)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        ((AppCompatButton) dialog.findViewById(R.id.bt_submit)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String review = et_post.getText().toString().trim();
+                if (review.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Please fill review text", Toast.LENGTH_SHORT).show();
+                } else {
+                    items.add("(" + rating_bar.getRating() + ") " + review);
+                    adapter.notifyDataSetChanged();
+                }
+                if (!adapter.isEmpty()) {
+                    txt_no_item.setVisibility(View.GONE);
+                }
+                dialog.dismiss();
+                Toast.makeText(getApplicationContext(), "Submitted", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        dialog.show();
+        dialog.getWindow().setAttributes(lp);
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        showCustomDialog();
+    }
 }

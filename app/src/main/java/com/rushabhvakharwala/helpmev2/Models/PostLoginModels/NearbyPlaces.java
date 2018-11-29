@@ -28,15 +28,19 @@ public class NearbyPlaces {
     @Expose
     private String rating;
 
+    @SerializedName("photo")
+    @Expose
+    private String photo;
     @Expose
     @SerializedName("status")
     private String status;
 
-    public NearbyPlaces(String name, String vicinity, String icon, String rating, String status) {
+    public NearbyPlaces(String name, String vicinity, String icon, String rating, String photo, String status) {
         this.name = name;
         this.vicinity = vicinity;
         this.icon = icon;
         this.rating = rating;
+        this.photo = photo;
         this.status = status;
     }
 
@@ -76,6 +80,8 @@ public class NearbyPlaces {
         return rating;
     }
 
+    public String getPhoto(){ return photo; }
+
     public String getStatus() {
         return status;
     }
@@ -84,17 +90,5 @@ public class NearbyPlaces {
         return "No description available";
     }
 
-    public Bitmap getBitmap(){
-        String urls = this.getIcon();
-        Bitmap icon = null;
-        try {
-            URL url = new URL(urls);
-            Bitmap bm = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-            return  bm;
-        } catch (Exception e) {
-            Log.e("Error", e.getMessage());
-            e.printStackTrace();
-        }
-        return icon;
-    }
+
 }

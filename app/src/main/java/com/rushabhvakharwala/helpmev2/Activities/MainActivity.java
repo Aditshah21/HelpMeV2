@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void userLogin(){
-        String email = editTextEmail.getText().toString().trim();
+        final String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
 
         //email validation
@@ -77,9 +77,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 if(response.code()==200){
 
-                    Toast.makeText(MainActivity.this, userToken.getUser().getAccess_token(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(MainActivity.this, userToken.getUser().getAccess_token(), Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(MainActivity.this, NearbyPlacesActivity.class);
                     intent.putExtra("access_token", userToken.getUser().getAccess_token());
+                    intent.putExtra("email", email);
                     startActivity(intent);
                     finish();
 

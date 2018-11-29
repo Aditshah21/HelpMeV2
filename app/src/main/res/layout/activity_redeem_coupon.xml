@@ -27,15 +27,21 @@
 
             </android.support.design.widget.AppBarLayout>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view"
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="179dp"
+                android:src="@drawable/barcode" />
+
+
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scrollbars="none"
-                android:scrollingCache="true">
-
-
-            </android.support.v7.widget.RecyclerView>
+                android:layout_height="wrap_content"
+                android:padding="@dimen/spacing_large"
+                android:layout_marginTop="@dimen/spacing_middle"
+                android:lineSpacingExtra="2dp"
+                android:text="Redeem this code to get discounts on products"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
+                android:textColor="@color/grey_60" />
 
 
         </LinearLayout>

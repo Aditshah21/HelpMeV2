@@ -48,6 +48,9 @@ public class NearbyPlacesAdapter extends RecyclerView.Adapter<NearbyPlacesAdapte
         holder.address.setText(nearbyPlace.getVicinity());
         holder.description.setText(nearbyPlace.getDescription());
         holder.storeImage.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.image_7,null));
+        Picasso.with(mCtx)
+                .load(nearbyPlace.getPhoto())
+                .into(holder.storeImage);
     }
 
     @Override
